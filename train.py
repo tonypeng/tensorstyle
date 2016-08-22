@@ -8,6 +8,7 @@ from random import shuffle
 
 CONTENT_WEIGHT = 750
 STYLE_WEIGHT = 1
+DENOISE_WEIGHT = 1e-2
 LEARNING_RATE = 1e-3
 EPOCHS = 10000
 
@@ -104,7 +105,10 @@ with g.as_default(), g.device(DEVICE), tf.Session(
         gram_target = grams[layer]
         loss_style += w_l * tf.nn.l2_loss(gram_target - gram)
 
-    loss = CONTENT_WEIGHT * loss_content + STYLE_WEIGHT * loss_style
+    loss_tv = (tf.nn.l2_loss(transfer_net[:, 1:, :, :] - transfer_net[:, :batch_shape[1]-1, :, :]) / tf.to_float(tf.size(transfer_net[0, 1:, :, :]))
+            + tf.nn.l2_loss(transfer_net[:, :, 1:, :] - transfer_net[:, :, :batch_shape[2]-1, :]) / tf.to_float(tf.size(transfer_net[0, :, 1:, :])))
+
+    loss = CONTENT_WEIGHT * loss_content + STYLE_WEIGHT * loss_style + DENOISE_WEIGHT * loss_tv
 
     # Optimize
     print("6. Optimizing...")
