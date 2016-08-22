@@ -1,15 +1,17 @@
 import numpy as np
 import scipy.io
 import tensorflow as tf
+import utils
 
 # Initialization parameters
 _STD_DEV = 0.1
 _INITIAL_BIAS = 0.1
 
-def stylzr(content_batch):
+def stylzr(x):
+    x = _spatial_replication_padding(x, 1, utils.tensor_shape(x), (9, 9))
     chan_conv1 = 32
     W_conv1 = _initialize_weights([9, 9, 3, chan_conv1])
-    conv1 = _conv2d(content_batch, W_conv1, 1)
+    conv1 = _conv2d(x, W_conv1, 1, border_mode='VALID')
     conv1 = _instance_normalization(conv1, chan_conv1)
     conv1_shape = tf.shape(conv1)
     relu1 = tf.nn.relu(conv1)
@@ -101,6 +103,27 @@ def _initialize_weights(shape):
 
 def _initialize_biases(shape):
     return tf.Variable(tf.constant(0.1, shape=shape))
+
+def _spatial_replication_padding(x, stride, output_shape, filter_shape):
+    _, in_height, in_width, chan = utils.tensor_shape(x)
+    _, out_height, out_width, chan = output_shape
+    filter_height, filter_width = filter_shape
+
+    total_padding_height = (out_height * stride + filter_height - 1) - in_height
+    total_padding_width = (out_width * stride + filter_width - 1) - in_width
+    
+    padding_top = total_padding_height // 2
+    padding_bottom = total_padding_height - padding_top
+    padding_left = total_padding_width // 2
+    padding_right = total_padding_width - padding_left
+    paddings = [padding_top, padding_bottom, padding_left, padding_right]
+    while max(paddings) > 0:
+        new_paddings = [max(0, p - 1) for p in paddings]
+        deltas = [o - n for o, n in zip(paddings, new_paddings)]
+        step_paddings = [[0, 0], [deltas[0], deltas[1]], [deltas[2], deltas[3]], [0, 0]]
+        x = tf.pad(x, step_paddings, mode='SYMMETRIC')
+        paddings = new_paddings
+    return x
 
 def _conv2d(x, W, stride, border_mode='SAME'):
     return tf.nn.conv2d(x, W, [1, stride, stride, 1], padding=border_mode)
