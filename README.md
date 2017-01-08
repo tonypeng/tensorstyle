@@ -16,8 +16,9 @@ Sample:
 
 Playing around with patterns:
 
-<img src="https://graph.facebook.com/100001233078747/picture?type=large" width="280">
+
 <img src="https://s-media-cache-ak0.pinimg.com/736x/48/d8/2e/48d82e9b70c9762cafc305f6ecc7aff2.jpg" width="280">
+<img src="https://graph.facebook.com/100001233078747/picture?type=large" width="280">
 <img src="http://i.imgur.com/1M3Yed0.png" width="280">
 
 
