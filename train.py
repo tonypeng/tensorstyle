@@ -1,3 +1,11 @@
+"""
+Copyright 2016-present Tony Peng
+
+Implementation of the papers "Perceptual Losses for Real-Time Style Transfer and Super-Resolution"
+by Justin Johnson, Alexandre Alahi, and Li Fei-Fei and "A Neural Algorithm of Artistic Style"
+by Leon Gatys, Alexander S Ecker, and Matthias Bethge.
+"""
+
 import nets
 import numpy as np
 import os
@@ -6,31 +14,33 @@ import tensorflow as tf
 import utils
 from random import shuffle
 
-CONTENT_WEIGHT = 750
-STYLE_WEIGHT = 1
-DENOISE_WEIGHT = 1e-2
+CONTENT_WEIGHT = 5
+STYLE_WEIGHT = 75
+DENOISE_WEIGHT = 50
 LEARNING_RATE = 1e-3
-EPOCHS = 10000
+EPOCHS = 2
 
 DEVICE = '/gpu:0'
-MODEL_OUTPUT_PATH = 'models/trained/StarryNight'
+MODEL_OUTPUT_PATH = 'models/trained/Udnie'
 MODEL_NAME = 'model'
 TRAIN_DATASET_PATH = '/home/ubuntu/dataset/train2014'
-VGG_MODEL_PATH = 'models/vgg/imagenet-vgg-verydeep-16.mat'
-STYLE_IMAGE_PATH = 'StarryNightCropped.png'
+VGG_MODEL_PATH = 'models/vgg/imagenet-vgg-verydeep-19.mat'
+STYLE_IMAGE_PATH = 'runs/Udnie/style.jpg'
 CONTENT_IMAGE_SIZE = (256, 256) # (height, width)
 STYLE_SCALE = 1.0
-MINI_BATCH_SIZE = 1
-OUTPUT_PATH = 'runs/StarryNight'
-PREVIEW_ITERATIONS = 100
+MINI_BATCH_SIZE = 23
+VALIDATION_IMAGE_PATH = 'runs/Udnie/content.jpg'
+OUTPUT_PATH = 'runs/Udnie'
+PREVIEW_ITERATIONS = 50
 CHECKPOINT_ITERATIONS = 500
-CONTENT_LAYER = 'relu2_2'
+CONTENT_LAYER = 'relu4_2'
 # layer: w_l
 STYLE_LAYERS = {
-    'relu1_2': 0.25,
-    'relu2_2': 0.25,
-    'relu3_3': 0.25,
-    'relu4_3': 0.25
+    'relu1_1': 0.2,
+    'relu2_1': 0.2,
+    'relu3_1': 0.2,
+    'relu4_1': 0.2,
+    'relu5_1': 0.2,
 }
 
  # batch shape is (batch, height, width, channels)
@@ -40,6 +50,8 @@ style_image = utils.read_image(STYLE_IMAGE_PATH,
 
 train_data = utils.get_train_data_filepaths(TRAIN_DATASET_PATH)
 print("Training dataset loaded: " + str(len(train_data)) + " images.")
+
+validation_image = utils.read_image(VALIDATION_IMAGE_PATH, size=CONTENT_IMAGE_SIZE)
 
 def evaluate_stylzr_output(t, feed_dict=None):
     return t.eval(feed_dict=feed_dict)
@@ -103,10 +115,13 @@ with g.as_default(), g.device(DEVICE), tf.Session(
         feature_maps = loss_layers[layer]
         gram = utils.tf_batch_gram_matrix(feature_maps)
         gram_target = grams[layer]
-        loss_style += w_l * tf.nn.l2_loss(gram_target - gram)
+        loss_style += w_l * tf.nn.l2_loss(gram_target - gram) / (gram_target.size * MINI_BATCH_SIZE)
 
-    loss_tv = (tf.nn.l2_loss(transfer_net[:, 1:, :, :] - transfer_net[:, :batch_shape[1]-1, :, :]) / tf.to_float(tf.size(transfer_net[0, 1:, :, :]))
+    loss_tv = (
+        (tf.nn.l2_loss(transfer_net[:, 1:, :, :] - transfer_net[:, :batch_shape[1]-1, :, :]) / tf.to_float(tf.size(transfer_net[0, 1:, :, :]))
             + tf.nn.l2_loss(transfer_net[:, :, 1:, :] - transfer_net[:, :, :batch_shape[2]-1, :]) / tf.to_float(tf.size(transfer_net[0, :, 1:, :])))
+        / MINI_BATCH_SIZE
+    )
 
     loss = CONTENT_WEIGHT * loss_content + STYLE_WEIGHT * loss_style + DENOISE_WEIGHT * loss_tv
 
@@ -147,6 +162,12 @@ with g.as_default(), g.device(DEVICE), tf.Session(
                         'orig', str(global_it_num))
                 utils.write_image(curr_styled_image, styled_output_path)
                 utils.write_image(curr_orig_image, orig_output_path)
+
+                valid_styled_image = output_evaluator(transfer_net,
+                        feed_dict={content_batch: np.array([validation_image]*MINI_BATCH_SIZE)})
+                valid_output_path = utils.get_output_filepath(OUTPUT_PATH,
+                        'valid', str(global_it_num))
+                utils.write_image(valid_styled_image[0], valid_output_path)
 
             if global_it_num % CHECKPOINT_ITERATIONS == 0:
                 model_filepath = os.path.join(MODEL_OUTPUT_PATH, MODEL_NAME)
