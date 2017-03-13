@@ -12,6 +12,7 @@ def read_image(path, mode='RGB', size=None):
     return img
 
 def write_image(img, path):
+    img = np.clip(img, 0, 255).astype(np.uint8)
     scipy.misc.imsave(path, img)
 
 def get_output_filepath(output_path, name, suffix='', ext='jpg'):

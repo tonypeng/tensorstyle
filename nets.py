@@ -12,6 +12,7 @@ def stylzr(x):
     chan_conv1 = 32
     W_conv1 = _initialize_weights([9, 9, 3, chan_conv1])
     conv1 = _conv2d(x, W_conv1, 1, border_mode='VALID')
+    # conv1 = _conv2d(x, W_conv1, 1)
     conv1 = _instance_normalization(conv1, chan_conv1)
     conv1_shape = tf.shape(conv1)
     relu1 = tf.nn.relu(conv1)
@@ -52,7 +53,7 @@ def stylzr(x):
     conv4 = _conv2d(relu5, W_conv4, 1)
     conv4 = _instance_normalization(conv4, chan_conv4)
 
-    return (tf.tanh(conv4) + 1) * 127.5
+    return (tf.tanh(conv4) * 150) + 127.5
 
 def gatys(content_image_shape):
     batch_shape = (1, ) + content_image_shape
@@ -62,7 +63,7 @@ def gatys(content_image_shape):
 
 def vgg(path, x, center_data=True, pool_function='MAX'):
     mat = scipy.io.loadmat(path)
-    mean_pixel = mat['meta'][0][0][1][0][0][0][0][0]
+    mean_pixel = mat['meta'][0][0][2][0][0][2][0][0]
     net = x
     if center_data:
         net = x - mean_pixel
@@ -111,7 +112,7 @@ def _spatial_replication_padding(x, stride, output_shape, filter_shape):
 
     total_padding_height = (out_height * stride + filter_height - 1) - in_height
     total_padding_width = (out_width * stride + filter_width - 1) - in_width
-    
+
     padding_top = total_padding_height // 2
     padding_bottom = total_padding_height - padding_top
     padding_left = total_padding_width // 2
