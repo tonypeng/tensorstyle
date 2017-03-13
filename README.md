@@ -23,7 +23,7 @@ Samples:
 
 *A Sunday on La Grande Jatte*, Slow, Content 0.005:Style 1: Denoise 1
 
-<img src="https://github.com/tonypeng/ml-playground/blob/master/style-transfer/ASundayOnLaGrandeJatte.jpg?raw=true" width="280">
+<img src="https://github.com/tonypeng/ml-playground/blob/master/style-transfer/ASundayOnLaGrandeJatte.jpg?raw=true" height="176">
 <img src="https://github.com/tonypeng/ml-playground/blob/master/style-transfer/KillianCourt.jpg?raw=true" width="280">
 <img src="https://raw.githubusercontent.com/tonypeng/ml-playground/master/style-transfer/KillianCourt%2BASundayOnLaGrandeJatte_Denoised.jpg" width="280">
 
