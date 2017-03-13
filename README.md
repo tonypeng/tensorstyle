@@ -7,7 +7,15 @@ To run, download the [VGG-19 network](http://www.vlfeat.org/matconvnet/models/im
 
 Note: Minimal hyperparameter tuning was performed. You can probably get much better results by tuning the parameters (e.g. loss function coefficients, layers/layer weights, etc.).
 
-Samples:
+
+### Differences from Paper
+* Use VGG-19 and content/style layers specified in *Gatys et al.*
+* Instance normalization for all convolutional layers including those in residual blocks
+* Output tanh activation is scaled by 150 then centered around 127.5 and clipped to [0, 255]
+* Border replication padding (reflection padding is planned)
+* Batch size 23 for 2 epochs (~7000 iterations)
+
+### Samples
 
 *Udnie*, Fast, Content 5:Style 75:Denoise 50
 
@@ -30,11 +38,11 @@ Samples:
 
 Playing around with patterns:
 
-
 <img src="https://s-media-cache-ak0.pinimg.com/736x/48/d8/2e/48d82e9b70c9762cafc305f6ecc7aff2.jpg" height="280">
 <img src="https://graph.facebook.com/100001233078747/picture?type=large" width="280">
 <img src="http://i.imgur.com/1M3Yed0.png" width="280">
 
 
 
-License: [MIT](https://github.com/tonypeng/tensorstyle/blob/master/LICENSE)
+### License
+[MIT](https://github.com/tonypeng/tensorstyle/blob/master/LICENSE)
