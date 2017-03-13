@@ -7,6 +7,8 @@ import utils
 _STD_DEV = 0.1
 _INITIAL_BIAS = 0.1
 
+_ELU_EXPERIMENTAL = True
+
 def stylzr(x):
     x = _spatial_replication_padding(x, 1, utils.tensor_shape(x), (9, 9))
     chan_conv1 = 32
@@ -15,22 +17,22 @@ def stylzr(x):
     # conv1 = _conv2d(x, W_conv1, 1)
     conv1 = _instance_normalization(conv1, chan_conv1)
     conv1_shape = tf.shape(conv1)
-    relu1 = tf.nn.relu(conv1)
+    act1 = _hidden_activation(conv1)
 
     chan_conv2 = 64
     W_conv2 = _initialize_weights([3, 3, chan_conv1, chan_conv2])
-    conv2 = _conv2d(relu1, W_conv2, 2)
+    conv2 = _conv2d(act1, W_conv2, 2)
     conv2 = _instance_normalization(conv2, chan_conv2)
     conv2_shape = tf.shape(conv2)
-    relu2 = tf.nn.relu(conv2)
+    act2 = _hidden_activation(conv2)
 
     chan_conv3 = 128
     W_conv3 = _initialize_weights([3, 3, chan_conv2, chan_conv3])
-    conv3 = _conv2d(relu2, W_conv3, 2)
+    conv3 = _conv2d(act2, W_conv3, 2)
     conv3 = _instance_normalization(conv3, chan_conv3)
-    relu3 = tf.nn.relu(conv3)
+    act3 = _hidden_activation(conv3)
 
-    resid1 = _resid_block(relu3, chan_conv3)
+    resid1 = _resid_block(act3, chan_conv3)
     resid2 = _resid_block(resid1, chan_conv3)
     resid3 = _resid_block(resid2, chan_conv3)
     resid4 = _resid_block(resid3, chan_conv3)
@@ -40,17 +42,17 @@ def stylzr(x):
     W_deconv1 = _initialize_weights([3, 3, chan_deconv1, chan_conv3])
     deconv1 = _deconv2d(resid5, W_deconv1, 2, conv2_shape)
     deconv1 = _instance_normalization(deconv1, chan_deconv1)
-    relu4 = tf.nn.relu(deconv1)
+    act4 = _hidden_activation(deconv1)
 
     chan_deconv2 = 32
     W_deconv2 = _initialize_weights([3, 3, chan_deconv2, chan_deconv1])
-    deconv2 = _deconv2d(relu4, W_deconv2, 2, conv1_shape)
+    deconv2 = _deconv2d(act4, W_deconv2, 2, conv1_shape)
     deconv2 = _instance_normalization(deconv2, chan_deconv2)
-    relu5 = tf.nn.relu(deconv2)
+    act5 = _hidden_activation(deconv2)
 
     chan_conv4 = 3
     W_conv4 = _initialize_weights([9, 9, chan_deconv2, chan_conv4])
-    conv4 = _conv2d(relu5, W_conv4, 1)
+    conv4 = _conv2d(act5, W_conv4, 1)
     conv4 = _instance_normalization(conv4, chan_conv4)
 
     return (tf.tanh(conv4) * 150) + 127.5
@@ -126,6 +128,11 @@ def _spatial_replication_padding(x, stride, output_shape, filter_shape):
         paddings = new_paddings
     return x
 
+def _hidden_activation(x):
+    if _ELU_EXPERIMENTAL:
+        return tf.nn.elu(x)
+    return tf.nn.relu(x)
+
 def _conv2d(x, W, stride, border_mode='SAME'):
     return tf.nn.conv2d(x, W, [1, stride, stride, 1], padding=border_mode)
 
@@ -144,10 +151,10 @@ def _resid_block(x, channels):
     W_conv1 = _initialize_weights([3, 3, channels, channels])
     conv1 = _conv2d(x, W_conv1, 1)
     conv1 = _instance_normalization(conv1, channels)
-    relu1 = tf.nn.relu(conv1)
+    act1 = _hidden_activation(conv1)
 
     W_conv2 = _initialize_weights([3, 3, channels, channels])
-    conv2 = _conv2d(relu1, W_conv2, 1)
+    conv2 = _conv2d(act1, W_conv2, 1)
     conv2 = _instance_normalization(conv2, channels)
 
     return conv2 + x
