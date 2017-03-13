@@ -3,7 +3,7 @@ Fast image style transfer using TensorFlow!
 
 Both the "slow," iterative method described in the paper [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576) by Gatys et al. and the "fast" feed-forward version described in the paper [Perceptual Losses for Real-Time Style Transfer and Super-Resolution](https://arxiv.org/abs/1603.08155) by Johnson et al. with modifications (e.g. replication border padding, instance normalization described in [Instance Normalization: The Missing Ingredient for Fast Stylization](https://arxiv.org/abs/1607.08022) by Ulyanov et al, etc.) are implemented.
 
-To run, download the [VGG-19 network](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat) into models/vgg, then edit the parameters in `train.py` (should be self-explanatory), then run `python3 train.py`. To run the iterative method, uncomment the relevant sections in the code as indicated by the comments.
+To run, download the [VGG-19 network](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat) into `models/vgg` and the [COCO dataset](http://mscoco.org/), then edit the parameters in `train.py` (should be self-explanatory), then run `python3 train.py`. To run the iterative method, uncomment the relevant sections in the code as indicated by the comments.
 
 Note: Minimal hyperparameter tuning was performed. You can probably get much better results by tuning the parameters (e.g. loss function coefficients, layers/layer weights, etc.).
 
