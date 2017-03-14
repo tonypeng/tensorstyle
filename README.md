@@ -19,28 +19,35 @@ Note: Minimal hyperparameter tuning was performed. You can probably get much bet
 
 *Udnie*, Fast, Content 5:Style 75:Denoise 50
 
-<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/style.jpg" height="186">
+<p>
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/style.jpg" height="186" style="padding-right: 8px">
 <img src="https://github.com/tonypeng/tensorstyle/blob/master/examples/Udnie/BostonSkyline.jpg" width="330">
 <img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/BostonSkylineStyled_75.jpg" width="330">
+</p>
 
 *Udnie*, Fast, Content 5:Style 50:Denoise 50
 
+<p>
 <img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/style.jpg" height="230">
 <img src="https://github.com/tonypeng/tensorstyle/blob/master/examples/Udnie/GoldenGate.jpg" width="307">
 <img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/GoldenGateStyled.jpg" width="307">
+</p>
 
 *A Sunday on La Grande Jatte*, Slow, Content 0.005:Style 1: Denoise 1
 
+<p>
 <img src="https://github.com/tonypeng/ml-playground/blob/master/style-transfer/ASundayOnLaGrandeJatte.jpg?raw=true" height="176">
 <img src="https://github.com/tonypeng/ml-playground/blob/master/style-transfer/KillianCourt.jpg?raw=true" width="280">
 <img src="https://raw.githubusercontent.com/tonypeng/ml-playground/master/style-transfer/KillianCourt%2BASundayOnLaGrandeJatte_Denoised.jpg" width="280">
-
+</p>
 
 Playing around with patterns:
 
+<p>
 <img src="https://s-media-cache-ak0.pinimg.com/736x/48/d8/2e/48d82e9b70c9762cafc305f6ecc7aff2.jpg" height="280">
 <img src="https://graph.facebook.com/100001233078747/picture?type=large" width="280">
 <img src="http://i.imgur.com/1M3Yed0.png" width="280">
+</p>
 
 
 
