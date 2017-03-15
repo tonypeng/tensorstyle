@@ -15,22 +15,22 @@ import utils
 from random import shuffle
 
 CONTENT_WEIGHT = 5
-STYLE_WEIGHT = 75
-DENOISE_WEIGHT = 50
+STYLE_WEIGHT = 85
+DENOISE_WEIGHT = 5
 LEARNING_RATE = 1e-3
 EPOCHS = 2
 
 DEVICE = '/gpu:0'
-MODEL_OUTPUT_PATH = 'models/trained/Udnie'
+MODEL_OUTPUT_PATH = 'models/trained/Geometric'
 MODEL_NAME = 'model'
 TRAIN_DATASET_PATH = '/home/ubuntu/dataset/train2014'
 VGG_MODEL_PATH = 'models/vgg/imagenet-vgg-verydeep-19.mat'
-STYLE_IMAGE_PATH = 'runs/Udnie/style.jpg'
+STYLE_IMAGE_PATH = 'runs/Geometric/style.jpg'
 CONTENT_IMAGE_SIZE = (256, 256) # (height, width)
 STYLE_SCALE = 1.0
-MINI_BATCH_SIZE = 23
-VALIDATION_IMAGE_PATH = 'runs/Udnie/content.jpg'
-OUTPUT_PATH = 'runs/Udnie'
+MINI_BATCH_SIZE = 16
+VALIDATION_IMAGE_PATH = 'runs/Geometric/content.jpg'
+OUTPUT_PATH = 'runs/Geometric'
 PREVIEW_ITERATIONS = 50
 CHECKPOINT_ITERATIONS = 500
 CONTENT_LAYER = 'relu4_2'
@@ -170,16 +170,8 @@ with g.as_default(), g.device(DEVICE), tf.Session(
                 utils.write_image(valid_styled_image[0], valid_output_path)
 
             if global_it_num % CHECKPOINT_ITERATIONS == 0:
-                model_filepath = os.path.join(MODEL_OUTPUT_PATH, MODEL_NAME)
-                model_meta_filepath = os.path.join(MODEL_OUTPUT_PATH,
-                        MODEL_NAME + '.meta')
-                if (os.path.isfile(model_filepath)
-                    and os.path.isfile(model_meta_filepath)):
-                    shutil.copy2(model_filepath, model_filepath + '.bak')
-                    shutil.copy2(model_meta_filepath,
-                            model_meta_filepath + '.bak')
-
-                saver.save(sess, model_filepath)
+                utils.save_model_with_backup(sess, saver, MODEL_OUTPUT_PATH, MODEL_NAME)
             global_it += 1
 
+utils.save_model_with_backup(sess, saver, MODEL_OUTPUT_PATH, MODEL_NAME)
 print("7: Profit!")

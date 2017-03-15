@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import scipy.misc
+import shutil
 import tensorflow as tf
 from functools import reduce
 from operator import mul
@@ -34,3 +35,16 @@ def tensor_shape(t):
 
 def get_train_data_filepaths(path):
     return [os.path.join(path, f) for f in os.listdir(path)]
+
+
+def save_model_with_backup(sess, saver, model_output_path, model_name):
+    model_filepath = os.path.join(model_output_path, model_name)
+    model_meta_filepath = os.path.join(model_output_path,
+            model_name + '.meta')
+    if (os.path.isfile(model_filepath)
+        and os.path.isfile(model_meta_filepath)):
+        shutil.copy2(model_filepath, model_filepath + '.bak')
+        shutil.copy2(model_meta_filepath,
+                model_meta_filepath + '.bak')
+
+    saver.save(sess, model_filepath)

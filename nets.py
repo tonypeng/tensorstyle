@@ -8,6 +8,7 @@ _STD_DEV = 0.1
 _INITIAL_BIAS = 0.1
 
 _ELU_EXPERIMENTAL = True
+_RESIZECONV_EXPERIMENTAL = True
 
 def stylzr(x):
     x = _spatial_replication_padding(x, 1, utils.tensor_shape(x), (9, 9))
@@ -40,13 +41,13 @@ def stylzr(x):
 
     chan_deconv1 = 64
     W_deconv1 = _initialize_weights([3, 3, chan_deconv1, chan_conv3])
-    deconv1 = _deconv2d(resid5, W_deconv1, 2, conv2_shape)
+    deconv1 = _upscale(resid5, W_deconv1, 2, conv2_shape)
     deconv1 = _instance_normalization(deconv1, chan_deconv1)
     act4 = _hidden_activation(deconv1)
 
     chan_deconv2 = 32
     W_deconv2 = _initialize_weights([3, 3, chan_deconv2, chan_deconv1])
-    deconv2 = _deconv2d(act4, W_deconv2, 2, conv1_shape)
+    deconv2 = _upscale(act4, W_deconv2, 2, conv1_shape)
     deconv2 = _instance_normalization(deconv2, chan_deconv2)
     act5 = _hidden_activation(deconv2)
 
@@ -136,8 +137,20 @@ def _hidden_activation(x):
 def _conv2d(x, W, stride, border_mode='SAME'):
     return tf.nn.conv2d(x, W, [1, stride, stride, 1], padding=border_mode)
 
+def _upscale(x, W, stride, output_shape, border_mode='SAME'):
+    if _RESIZECONV_EXPERIMENTAL:
+        return _resizeconv2d(x, W, stride, border_mode)
+    return _deconv2d(x, W, stride, output_shape)
+
 def _deconv2d(x, W, stride, output_shape, border_mode='SAME'):
     return tf.nn.conv2d_transpose(x, W, output_shape, [1, stride, stride, 1], padding=border_mode)
+
+def _resizeconv2d(x, W, stride, border_mode='SAME'):
+    x_size = x.get_shape().as_list()
+    resized_height, resized_width = x_size[1] * stride * stride, x_size[2] * stride * stride
+    x_resized = tf.image.resize_images(x, resized_height, resized_width, method=tf.image.ResizeMethod.NEAREST_NEIGHBOR)
+    W_T = tf.transpose(W, perm=[0, 1, 3, 2])
+    return _conv2d(x_resized, W_T, stride, border_mode='SAME')
 
 def _avg_pool(x, ksize, stride=None, border_mode='SAME'):
     stride = stride or ksize

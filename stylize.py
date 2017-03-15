@@ -10,9 +10,9 @@ import tensorflow as tf
 import utils
 import time
 
-MODEL_PATH = 'models/trained/Udnie'
-CONTENT_IMAGE_PATH = 'runs/Udnie/content_small.jpg'
-OUTPUT_IMAGE_PATH = 'runs/Udnie/styled4.jpg'
+MODEL_PATH = 'models/trained/UdnieResizeConv'
+CONTENT_IMAGE_PATH = 'runs/Udnie/stata.jpg'
+OUTPUT_IMAGE_PATH = 'runs/Udnie/styled_stata_rconv.jpg'
 
 content_image = utils.read_image(CONTENT_IMAGE_PATH)
 
