@@ -10,7 +10,7 @@ Note: Minimal hyperparameter tuning was performed. You can probably get much bet
 
 ### Differences from Paper
 * ELU instead of ReLU (experimental)
-* Resize convolution layers instead of transpose convolution layers (experimental)
+* [Resize convolution layers](http://distill.pub/2016/deconv-checkerboard/) instead of transpose convolution layers (experimental)
 * VGG-19 and content/style layers specified in *Gatys et al.*
 * Instance normalization for all convolutional layers including those in residual blocks
 * Output tanh activation is scaled by 150 then centered around 127.5 and clipped to [0, 255]
