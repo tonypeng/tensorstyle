@@ -9,11 +9,13 @@ Note: Minimal hyperparameter tuning was performed. You can probably get much bet
 
 
 ### Differences from Paper
-* Use VGG-19 and content/style layers specified in *Gatys et al.*
+* ELU instead of ReLU (experimental)
+* Resize convolution layers instead of transpose convolution layers (experimental)
+* VGG-19 and content/style layers specified in *Gatys et al.*
 * Instance normalization for all convolutional layers including those in residual blocks
 * Output tanh activation is scaled by 150 then centered around 127.5 and clipped to [0, 255]
 * Border replication padding (reflection padding is planned)
-* Batch size 23 for 2 epochs (~7000 iterations)
+* Batch size 16 for 2 epochs (~10000 iterations)
 
 ### Samples
 
