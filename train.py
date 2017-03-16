@@ -21,16 +21,16 @@ LEARNING_RATE = 1e-3
 EPOCHS = 2
 
 DEVICE = '/gpu:0'
-MODEL_OUTPUT_PATH = 'models/trained/Geometric'
+MODEL_OUTPUT_PATH = 'models/trained/WhiteLine'
 MODEL_NAME = 'model'
 TRAIN_DATASET_PATH = '/home/ubuntu/dataset/train2014'
 VGG_MODEL_PATH = 'models/vgg/imagenet-vgg-verydeep-19.mat'
-STYLE_IMAGE_PATH = 'runs/Geometric/style.jpg'
+STYLE_IMAGE_PATH = 'runs/WhiteLine/style.jpg'
 CONTENT_IMAGE_SIZE = (256, 256) # (height, width)
 STYLE_SCALE = 1.0
 MINI_BATCH_SIZE = 16
-VALIDATION_IMAGE_PATH = 'runs/Geometric/content.jpg'
-OUTPUT_PATH = 'runs/Geometric'
+VALIDATION_IMAGE_PATH = 'runs/WhiteLine/content.jpg'
+OUTPUT_PATH = 'runs/WhiteLine'
 PREVIEW_ITERATIONS = 50
 CHECKPOINT_ITERATIONS = 500
 CONTENT_LAYER = 'relu4_2'
@@ -173,5 +173,5 @@ with g.as_default(), g.device(DEVICE), tf.Session(
                 utils.save_model_with_backup(sess, saver, MODEL_OUTPUT_PATH, MODEL_NAME)
             global_it += 1
 
-utils.save_model_with_backup(sess, saver, MODEL_OUTPUT_PATH, MODEL_NAME)
+    utils.save_model_with_backup(sess, saver, MODEL_OUTPUT_PATH, MODEL_NAME)
 print("7: Profit!")
