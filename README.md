@@ -19,15 +19,24 @@ Note: Minimal hyperparameter tuning was performed. You can probably get much bet
 
 ### Samples
 
-*Udnie*, Fast, Content 5:Style 75:Denoise 50
+*White Line*, Fast, Content 5:Style 85:Denoise 5
+
+<p>
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/style.jpg" height="186" style="padding-right: 8px">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/WorldTradeCenter.jpg" width="330">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/WorldTradeCenterStyled.jpg" width="330">
+</p>
+
+
+*Udnie*, Fast, Content 5:Style 85:Denoise 1
 
 <p>
 <img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/style.jpg" height="186" style="padding-right: 8px">
 <img src="https://github.com/tonypeng/tensorstyle/blob/master/examples/Udnie/BostonSkyline.jpg" width="330">
-<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/BostonSkylineStyled_75.jpg" width="330">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/BostonSkylineStyled_ELU_ResizeConv.jpg" width="330">
 </p>
 
-*Udnie*, Fast, Content 5:Style 50:Denoise 50
+*Udnie*, Fast, Content 5:Style 50:Denoise 50 (ReLU, Transpose Convolution)
 
 <p>
 <img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/style.jpg" height="230">
@@ -50,7 +59,6 @@ Playing around with patterns:
 <img src="https://graph.facebook.com/100001233078747/picture?type=large" width="280">
 <img src="http://i.imgur.com/1M3Yed0.png" width="280">
 </p>
-
 
 
 ### License
