@@ -22,9 +22,9 @@ Note: Minimal hyperparameter tuning was performed. You can probably get much bet
 *White Line*, Fast, Content 5:Style 85:Denoise 5
 
 <p>
-<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/style.jpg" height="186" style="padding-right: 8px">
-<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/WorldTradeCenter.jpg" width="330">
-<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/WorldTradeCenterStyled.jpg" width="330">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/style.jpg" height="221" style="padding-right: 8px">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/WorldTradeCenter.jpg" width="332">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/WhiteLine/WorldTradeCenterStyled.jpg" width="332">
 </p>
 
 
