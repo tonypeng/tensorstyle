@@ -36,6 +36,14 @@ Note: Minimal hyperparameter tuning was performed. You can probably get much bet
 <img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/Udnie/BostonSkylineStyled_ELU_ResizeConv.jpg" width="330">
 </p>
 
+*Red Canna*, Fast, Content 5:Style 85:Denoise 5
+
+<p>
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/RedCanna/style.jpg" height="220" style="padding-right: 8px">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/RedCanna/EiffelTower.jpg" width="330">
+<img src="https://raw.githubusercontent.com/tonypeng/tensorstyle/master/examples/RedCanna/EiffelTowerStyled.jpg" width="330">
+</p>
+
 *Udnie*, Fast, Content 5:Style 50:Denoise 50 (ReLU, Transpose Convolution)
 
 <p>
